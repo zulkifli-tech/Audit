@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pinnacle Audit · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg:#070d1a;
+  --bg2:#0c1425;
+  --card:#0f1b30;
+  --card2:#132040;
+  --border:rgba(99,149,210,0.12);
+  --navy:#1a3a6b;
+  --blue:#3d7edb;
+  --blue2:#5b9bf5;
+  --blue-light:#1e3a5f;
+  --cyan:#38bdf8;
+  --gold:#d4a843;
+  --gold2:#f0c96a;
+  --green:#22c55e;
+  --green-light:rgba(34,197,94,0.1);
+  --red:#ef4444;
+  --red-light:rgba(239,68,68,0.1);
+  --orange:#f97316;
+  --orange-light:rgba(249,115,22,0.1);
+  --purple:#a78bfa;
+  --text:#e2eeff;
+  --text2:#8aa8d0;
+  --muted:#4a6585;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 45% at 15% 0%, rgba(61,126,219,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 90% 85%, rgba(212,168,67,0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 50% at 50% 50%, rgba(56,189,248,0.04) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(99,149,210,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,149,210,0.025) 1px, transparent 1px);
+  background-size:36px 36px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap{
+  position:relative;z-index:1;
+  padding:16px;
+  max-width:480px;
+  margin:0 auto;
+}
+
+/* HEADER */
+.header{
+  background:linear-gradient(145deg,#0f2a52,#071428);
+  border:1px solid rgba(61,126,219,0.2);
+  border-radius:22px;padding:18px;
+  margin-bottom:16px;
+  position:relative;overflow:hidden;
+  box-shadow:0 10px 40px rgba(7,13,26,0.6), inset 0 1px 0 rgba(61,126,219,0.15);
+}
+
+.header::before{
+  content:'';
+  position:absolute;top:-40px;right:-30px;
+  width:140px;height:140px;border-radius:50%;
+  background:rgba(61,126,219,0.06);
+}
+
+.header::after{
+  content:'AUDIT';
+  position:absolute;right:-8px;bottom:-10px;
+  font-family:'Fraunces',serif;
+  font-size:64px;font-weight:800;
+  color:rgba(61,126,219,0.04);
+  letter-spacing:0.05em;
+}
+
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.logo-row{display:flex;align-items:center;gap:12px;}
+.logo-box{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,#3d7edb,#1a3a6b);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 4px 16px rgba(61,126,219,0.35);
+  flex-shrink:0;
+}
+.brand-name{
+  font-family:'Fraunces',serif;
+  font-size:18px;color:#fff;line-height:1.2;font-weight:700;
+}
+.brand-sub{font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:0.2em;text-transform:uppercase;margin-top:3px;}
+
+.live-badge{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(56,189,248,0.1);
+  border:1px solid rgba(56,189,248,0.25);
+  border-radius:20px;padding:5px 11px;
+  font-size:9px;color:var(--cyan);
+  font-family:'JetBrains Mono',monospace;
+  flex-shrink:0;
+}
+.live-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;animation:blink 1.2s ease infinite;}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(61,126,219,0.3),transparent);margin:12px 0;}
+
+.header-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.hstat{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;padding:10px;text-align:center;
+}
+.hstat-val{font-size:14px;font-weight:800;color:#fff;line-height:1;}
+.hstat-lbl{font-size:8px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px;font-family:'JetBrains Mono',monospace;}
+
+/* DATE STRIP */
+.date-strip{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:10px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;
+}
+.date-lbl{font-size:10px;color:var(--muted);}
+.date-val{font-size:11px;color:var(--blue2);font-weight:700;font-family:'JetBrains Mono',monospace;}
+
+/* SECTION */
+.section-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--blue2);margin-bottom:10px;margin-top:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::before{content:'//';color:var(--cyan);opacity:0.6;}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(61,126,219,0.3),transparent);}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.kpi{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:14px;
+  position:relative;overflow:hidden;
+  animation:fadeUp 0.4s ease both;
+  box-shadow:0 2px 16px rgba(7,13,26,0.4);
+}
+.kpi-stripe{position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi-icon-wrap{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:10px;
+}
+.kpi-val{font-size:21px;font-weight:800;line-height:1;margin-bottom:2px;}
+.kpi-lbl{font-size:10px;color:var(--muted);line-height:1.3;}
+.kpi-badge{display:inline-block;font-size:9px;padding:2px 8px;border-radius:6px;font-weight:700;margin-top:5px;font-family:'JetBrains Mono',monospace;}
+.up{background:rgba(34,197,94,0.15);color:#22c55e;}
+.dn{background:rgba(239,68,68,0.15);color:#ef4444;}
+.warn{background:rgba(249,115,22,0.15);color:#f97316;}
+.neu{background:rgba(61,126,219,0.15);color:var(--blue2);}
+
+/* CARD */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+  animation:fadeUp 0.4s ease both;
+  margin-bottom:10px;
+  box-shadow:0 2px 16px rgba(7,13,26,0.4);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(61,126,219,0.3),transparent);
+}
+.card-title{
+  font-family:'Fraunces',serif;
+  font-size:14px;color:#fff;font-weight:700;
+  margin-bottom:2px;display:flex;align-items:center;gap:6px;
+}
+.card-sub{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;}
+
+/* REVENUE ROWS */
+.rev-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.rev-row:last-child{border-bottom:none;}
+.rev-left{display:flex;align-items:center;gap:8px;}
+.rev-icon{font-size:16px;}
+.rev-name{font-size:11px;color:var(--text);font-weight:500;}
+.rev-count{font-size:9px;color:var(--muted);}
+.rev-val{font-size:13px;font-weight:700;}
+.rev-pct{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+/* ENGAGEMENT ITEMS */
+.eng-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:10px;margin-bottom:6px;
+  border:1px solid var(--border);
+}
+.eng-active{background:rgba(61,126,219,0.08);}
+.eng-done{background:rgba(34,197,94,0.06);}
+.eng-overdue{background:rgba(239,68,68,0.07);}
+.eng-left{display:flex;align-items:center;gap:8px;}
+.eng-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.eng-name{font-size:11px;font-weight:600;color:var(--text);}
+.eng-client{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.eng-right{text-align:right;}
+.eng-val{font-size:12px;font-weight:700;}
+.eng-status{font-size:8px;padding:2px 7px;border-radius:6px;font-weight:700;margin-top:2px;display:inline-block;font-family:'JetBrains Mono',monospace;}
+.s-active{background:rgba(61,126,219,0.2);color:var(--blue2);}
+.s-done{background:rgba(34,197,94,0.15);color:#22c55e;}
+.s-overdue{background:rgba(239,68,68,0.15);color:#ef4444;}
+.s-review{background:rgba(212,168,67,0.15);color:var(--gold2);}
+
+/* DEADLINE */
+.deadline-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:10px;margin-bottom:6px;
+  border-left:3px solid transparent;
+}
+.dl-crit{background:rgba(239,68,68,0.08);border-color:#ef4444;}
+.dl-soon{background:rgba(249,115,22,0.08);border-color:#f97316;}
+.dl-ok{background:rgba(34,197,94,0.06);border-color:#22c55e;}
+.dl-left{display:flex;align-items:center;gap:8px;}
+.dl-icon{font-size:16px;}
+.dl-name{font-size:11px;font-weight:600;color:var(--text);}
+.dl-client{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.dl-right{text-align:right;}
+.dl-date{font-size:11px;font-weight:700;}
+.dl-days{font-size:9px;color:var(--muted);}
+
+/* TARGET BARS */
+.target-item{margin-bottom:13px;}
+.target-hd{display:flex;justify-content:space-between;margin-bottom:5px;}
+.target-name{font-size:11px;color:var(--text);font-weight:600;}
+.target-pct{font-size:12px;font-weight:800;font-family:'JetBrains Mono',monospace;}
+.target-bar-bg{height:7px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;}
+.target-bar-fill{height:100%;border-radius:4px;}
+.target-sub{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:3px;font-family:'JetBrains Mono',monospace;}
+
+/* CLIENT */
+.client-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:10px;margin-bottom:6px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.cl-left{display:flex;align-items:center;gap:8px;}
+.cl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.cl-name{font-size:11px;font-weight:600;color:var(--text);}
+.cl-type{font-size:9px;color:var(--muted);}
+.cl-right{text-align:right;}
+.cl-val{font-size:12px;font-weight:700;}
+.cl-status{font-size:8px;padding:2px 7px;border-radius:6px;font-weight:700;margin-top:2px;display:inline-block;font-family:'JetBrains Mono',monospace;}
+.s-new{background:rgba(34,197,94,0.15);color:#22c55e;}
+.s-repeat{background:rgba(61,126,219,0.15);color:var(--blue2);}
+.s-risk{background:rgba(239,68,68,0.15);color:#ef4444;}
+.s-qual{background:rgba(212,168,67,0.15);color:var(--gold2);}
+
+/* STAFF */
+.staff-item{
+  padding:12px;border-radius:12px;margin-bottom:8px;
+  background:var(--card2);border:1px solid var(--border);
+}
+.staff-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.staff-left{display:flex;align-items:center;gap:8px;}
+.staff-avatar{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  background:rgba(61,126,219,0.12);border:1px solid rgba(61,126,219,0.2);
+}
+.staff-name{font-size:12px;font-weight:700;color:#fff;}
+.staff-title{font-size:9px;color:var(--muted);}
+.staff-hrs{font-size:14px;font-weight:800;color:var(--blue2);}
+.staff-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.staff-stat{background:rgba(255,255,255,0.03);border-radius:8px;padding:6px;text-align:center;}
+.staff-stat-val{font-size:12px;font-weight:700;color:var(--text);}
+.staff-stat-lbl{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.util-bar-bg{height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;margin-top:6px;}
+.util-bar-fill{height:100%;border-radius:3px;}
+
+/* RISK */
+.risk-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:10px;margin-bottom:6px;
+  border:1px solid var(--border);
+}
+.risk-high{background:rgba(239,68,68,0.08);}
+.risk-med{background:rgba(249,115,22,0.06);}
+.risk-low{background:rgba(34,197,94,0.05);}
+.risk-left{display:flex;align-items:center;gap:8px;}
+.risk-icon{font-size:16px;}
+.risk-name{font-size:11px;font-weight:600;color:var(--text);}
+.risk-issue{font-size:9px;color:var(--muted);}
+.risk-badge{font-size:8px;padding:3px 9px;border-radius:6px;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.r-high{background:rgba(239,68,68,0.2);color:#ef4444;}
+.r-med{background:rgba(249,115,22,0.2);color:#f97316;}
+.r-low{background:rgba(34,197,94,0.15);color:#22c55e;}
+
+/* OUTSTANDING */
+.outstanding{
+  margin-top:12px;padding:12px 14px;
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);
+  border-radius:12px;display:flex;justify-content:space-between;align-items:center;
+}
+
+/* ALERT */
+.alert-card{
+  border-radius:12px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:8px;border-left:3px solid transparent;
+}
+.alert-crit{background:rgba(239,68,68,0.08);border-color:#ef4444;}
+.alert-warn{background:rgba(249,115,22,0.08);border-color:#f97316;}
+.alert-ok{background:rgba(34,197,94,0.07);border-color:#22c55e;}
+.alert-info{background:rgba(61,126,219,0.08);border-color:var(--blue2);}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.alert-title{font-size:12px;font-weight:700;margin-bottom:3px;}
+.alert-desc{font-size:10px;color:var(--muted);line-height:1.5;}
+
+/* SUMMARY */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sum-item{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sum-icon{font-size:20px;flex-shrink:0;}
+.sum-val{font-size:16px;font-weight:800;color:#fff;line-height:1;}
+.sum-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px;line-height:1.3;}
+
+/* TAB BAR */
+.tab-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(7,13,26,0.97);
+  backdrop-filter:blur(16px);
+  border-top:1px solid rgba(61,126,219,0.15);
+  display:flex;justify-content:space-around;align-items:center;
+  padding:8px 0 14px;z-index:100;
+  box-shadow:0 -4px 20px rgba(7,13,26,0.5);
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:9px;color:var(--muted);cursor:pointer;padding:4px 10px;
+  font-family:'JetBrains Mono',monospace;
+}
+.tab-item.active{color:var(--blue2);}
+.tab-icon{font-size:18px;}
+.bottom-space{height:72px;}
+
+.footer{
+  text-align:center;margin-top:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;color:var(--muted);
+  letter-spacing:0.2em;text-transform:uppercase;
+  opacity:0.4;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+@media(min-width:600px){
+  .wrap{max-width:1000px;}
+  .kpi-grid{grid-template-columns:repeat(4,1fr);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .two-col .card{margin-bottom:0;}
+  .sum-grid{grid-template-columns:repeat(4,1fr);}
+  .tab-bar{display:none;}
+  .bottom-space{height:0;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-row">
+        <div class="logo-box">🔍</div>
+        <div>
+          <div class="brand-name">Pinnacle Audit & Co.</div>
+          <div class="brand-sub">Audit Practice Dashboard</div>
+        </div>
+      </div>
+      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+    </div>
+    <div class="divider"></div>
+    <div class="header-stats">
+      <div class="hstat">
+        <div class="hstat-val">RM224K</div>
+        <div class="hstat-lbl">Revenue</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val">48</div>
+        <div class="hstat-lbl">Engagements</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" style="color:#ff9b9b;">5</div>
+        <div class="hstat-lbl">Overdue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATE -->
+  <div class="date-strip">
+    <span class="date-lbl">📅 Reporting Period</span>
+    <span class="date-val">February 2026</span>
+  </div>
+
+  <!-- 1. KPI -->
+  <div class="section-label">01 · Revenue Overview</div>
+  <div class="kpi-grid">
+    <div class="kpi" style="animation-delay:0.05s;">
+      <div class="kpi-stripe" style="background:linear-gradient(90deg,#3d7edb,#38bdf8);"></div>
+      <div class="kpi-icon-wrap" style="background:rgba(61,126,219,0.12);">💰</div>
+      <div class="kpi-val" style="color:var(--blue2);">RM224K</div>
+      <div class="kpi-lbl">Audit Fees Collected</div>
+      <span class="kpi-badge up">▲ 13.6%</span>
+    </div>
+    <div class="kpi" style="animation-delay:0.1s;">
+      <div class="kpi-stripe" style="background:linear-gradient(90deg,#ef4444,#f87171);"></div>
+      <div class="kpi-icon-wrap" style="background:rgba(239,68,68,0.1);">📄</div>
+      <div class="kpi-val" style="color:#ef4444;">RM58K</div>
+      <div class="kpi-lbl">Outstanding Billing</div>
+      <span class="kpi-badge dn">Follow Up!</span>
+    </div>
+    <div class="kpi" style="animation-delay:0.15s;">
+      <div class="kpi-stripe" style="background:linear-gradient(90deg,#d4a843,#f0c96a);"></div>
+      <div class="kpi-icon-wrap" style="background:rgba(212,168,67,0.1);">📋</div>
+      <div class="kpi-val" style="color:var(--gold2);">48</div>
+      <div class="kpi-lbl">Active Engagements</div>
+      <span class="kpi-badge neu">+4 New</span>
+    </div>
+    <div class="kpi" style="animation-delay:0.2s;">
+      <div class="kpi-stripe" style="background:linear-gradient(90deg,#f97316,#fbbf24);"></div>
+      <div class="kpi-icon-wrap" style="background:rgba(249,115,22,0.1);">⚠️</div>
+      <div class="kpi-val" style="color:#f97316;">5</div>
+      <div class="kpi-lbl">Overdue Jobs</div>
+      <span class="kpi-badge warn">Urgent!</span>
+    </div>
+  </div>
+
+  <!-- 2. REVENUE + TARGET -->
+  <div class="section-label">02 · Revenue & Target</div>
+  <div class="two-col">
+
+    <!-- Revenue by type -->
+    <div class="card">
+      <div class="card-title">💼 Revenue by Service</div>
+      <div class="card-sub">Breakdown · Feb 2026</div>
+
+      <div class="rev-row">
+        <div class="rev-left">
+          <div class="rev-icon">🔍</div>
+          <div>
+            <div class="rev-name">Statutory Audit</div>
+            <div class="rev-count">22 engagements</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rev-val" style="color:var(--blue2);">RM 98,400</div>
+          <div class="rev-pct">43.9%</div>
+        </div>
+      </div>
+
+      <div class="rev-row">
+        <div class="rev-left">
+          <div class="rev-icon">🏢</div>
+          <div>
+            <div class="rev-name">Internal Audit</div>
+            <div class="rev-count">10 engagements</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rev-val" style="color:var(--gold2);">RM 56,800</div>
+          <div class="rev-pct">25.4%</div>
+        </div>
+      </div>
+
+      <div class="rev-row">
+        <div class="rev-left">
+          <div class="rev-icon">📊</div>
+          <div>
+            <div class="rev-name">Tax Advisory</div>
+            <div class="rev-count">12 clients</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rev-val" style="color:#22c55e;">RM 42,600</div>
+          <div class="rev-pct">19.0%</div>
+        </div>
+      </div>
+
+      <div class="rev-row">
+        <div class="rev-left">
+          <div class="rev-icon">🔎</div>
+          <div>
+            <div class="rev-name">Due Diligence</div>
+            <div class="rev-count">4 engagements</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rev-val" style="color:#a78bfa;">RM 18,200</div>
+          <div class="rev-pct">8.1%</div>
+        </div>
+      </div>
+
+      <div class="rev-row">
+        <div class="rev-left">
+          <div class="rev-icon">📋</div>
+          <div>
+            <div class="rev-name">Special Assignment</div>
+            <div class="rev-count">4 engagements</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rev-val" style="color:var(--muted);">RM 8,000</div>
+          <div class="rev-pct">3.6%</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;padding:10px 12px;background:rgba(61,126,219,0.08);border:1px solid rgba(61,126,219,0.2);border-radius:10px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:9px;color:var(--blue2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;">Total Collected</span>
+        <span style="font-size:18px;font-weight:800;color:var(--blue2);">RM 224,000</span>
+      </div>
+    </div>
+
+    <!-- Target vs Actual -->
+    <div class="card">
+      <div class="card-title">🎯 Target vs Actual</div>
+      <div class="card-sub">Monthly Achievement</div>
+
+      <div class="target-item">
+        <div class="target-hd">
+          <span class="target-name">Fees Collected</span>
+          <span class="target-pct" style="color:#22c55e;">112%</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill" style="width:100%;background:linear-gradient(90deg,#3d7edb,#38bdf8);"></div></div>
+        <div class="target-sub"><span>RM224K</span><span>Target: RM200K</span></div>
+      </div>
+
+      <div class="target-item">
+        <div class="target-hd">
+          <span class="target-name">Jobs Completed</span>
+          <span class="target-pct" style="color:#22c55e;">104%</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#86efac);"></div></div>
+        <div class="target-sub"><span>26 jobs</span><span>Target: 25</span></div>
+      </div>
+
+      <div class="target-item">
+        <div class="target-hd">
+          <span class="target-name">New Clients</span>
+          <span class="target-pct" style="color:var(--gold2);">80%</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill" style="width:80%;background:linear-gradient(90deg,#d4a843,#f0c96a);"></div></div>
+        <div class="target-sub"><span>4 clients</span><span>Target: 5</span></div>
+      </div>
+
+      <div class="target-item">
+        <div class="target-hd">
+          <span class="target-name">Chargeable Hours</span>
+          <span class="target-pct" style="color:#f97316;">82%</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill" style="width:82%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div></div>
+        <div class="target-sub"><span>820 hrs</span><span>Target: 1,000</span></div>
+      </div>
+
+      <!-- Mini trend -->
+      <div style="margin-top:12px;">
+        <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">6-Month Revenue Trend</div>
+        <svg viewBox="0 0 260 45" style="width:100%;" fill="none">
+          <path d="M0,38 L52,32 L104,28 L156,20 L208,14 L260,6 L260,43 L0,43 Z" fill="rgba(61,126,219,0.1)"/>
+          <path d="M0,38 L52,32 L104,28 L156,20 L208,14 L260,6" stroke="#3d7edb" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="260" cy="6" r="3" fill="#38bdf8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ENGAGEMENT TRACKING -->
+  <div class="section-label">03 · Engagement Tracking</div>
+  <div class="card">
+    <div class="card-title">📋 Active Audit Engagements</div>
+    <div class="card-sub">Status · Feb 2026</div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+      <div style="background:rgba(61,126,219,0.1);border:1px solid rgba(61,126,219,0.2);border-radius:10px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:var(--blue2);">48</div>
+        <div style="font-size:8px;color:var(--muted);">TOTAL</div>
+      </div>
+      <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#22c55e;">26</div>
+        <div style="font-size:8px;color:var(--muted);">DONE</div>
+      </div>
+      <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:10px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#f97316;">17</div>
+        <div style="font-size:8px;color:var(--muted);">IN PROGRESS</div>
+      </div>
+      <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:800;color:#ef4444;">5</div>
+        <div style="font-size:8px;color:var(--muted);">OVERDUE</div>
+      </div>
+    </div>
+
+    <div class="eng-item eng-overdue">
+      <div class="eng-left">
+        <div class="eng-dot" style="background:#ef4444;"></div>
+        <div>
+          <div class="eng-name">Annual Audit FY2025</div>
+          <div class="eng-client">Syarikat Jaya Murni · SSM</div>
+        </div>
+      </div>
+      <div class="eng-right">
+        <div class="eng-val" style="color:#ef4444;">RM 18,400</div>
+        <div class="eng-status s-overdue">OVERDUE</div>
+      </div>
+    </div>
+
+    <div class="eng-item eng-active">
+      <div class="eng-left">
+        <div class="eng-dot" style="background:var(--blue2);"></div>
+        <div>
+          <div class="eng-name">Statutory Audit FY2025</div>
+          <div class="eng-client">Rahman Holdings · SSM</div>
+        </div>
+      </div>
+      <div class="eng-right">
+        <div class="eng-val" style="color:var(--blue2);">RM 24,000</div>
+        <div class="eng-status s-active">IN PROGRESS</div>
+      </div>
+    </div>
+
+    <div class="eng-item eng-active">
+      <div class="eng-left">
+        <div class="eng-dot" style="background:var(--gold2);"></div>
+        <div>
+          <div class="eng-name">Internal Audit Q1</div>
+          <div class="eng-client">Mega Retail Group · Internal</div>
+        </div>
+      </div>
+      <div class="eng-right">
+        <div class="eng-val" style="color:var(--gold2);">RM 16,800</div>
+        <div class="eng-status s-review">REVIEW</div>
+      </div>
+    </div>
+
+    <div class="eng-item eng-done">
+      <div class="eng-left">
+        <div class="eng-dot" style="background:#22c55e;"></div>
+        <div>
+          <div class="eng-name">Due Diligence Report</div>
+          <div class="eng-client">Tech Ventures MY · M&A</div>
+        </div>
+      </div>
+      <div class="eng-right">
+        <div class="eng-val" style="color:#22c55e;">RM 12,000</div>
+        <div class="eng-status s-done">✓ DONE</div>
+      </div>
+    </div>
+
+    <div class="eng-item eng-done">
+      <div class="eng-left">
+        <div class="eng-dot" style="background:#22c55e;"></div>
+        <div>
+          <div class="eng-name">Tax Advisory FY2025</div>
+          <div class="eng-client">Klinik Perdana · LHDN</div>
+        </div>
+      </div>
+      <div class="eng-right">
+        <div class="eng-val" style="color:#22c55e;">RM 8,400</div>
+        <div class="eng-status s-done">✓ DONE</div>
+      </div>
+    </div>
+
+    <!-- Clients belum hantar doc -->
+    <div style="margin-top:12px;padding:12px 14px;background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:9px;color:#f97316;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:3px;">📂 Awaiting Client Documents</div>
+        <div style="font-size:10px;color:var(--muted);">Clients belum hantar dokumen lengkap</div>
+      </div>
+      <div style="font-size:28px;font-weight:800;color:#f97316;">11</div>
+    </div>
+  </div>
+
+  <!-- 4. DEADLINE TRACKING -->
+  <div class="section-label">04 · Deadline & Compliance</div>
+  <div class="card">
+    <div class="card-title">⏰ Submission Deadlines</div>
+    <div class="card-sub">SSM · LHDN · Internal · Feb 2026</div>
+
+    <div class="deadline-item dl-crit">
+      <div class="dl-left">
+        <div class="dl-icon">🔴</div>
+        <div>
+          <div class="dl-name">Audit Report Submission</div>
+          <div class="dl-client">Syarikat Jaya Murni · SSM</div>
+        </div>
+      </div>
+      <div class="dl-right">
+        <div class="dl-date" style="color:#ef4444;">3 Mar 2026</div>
+        <div class="dl-days" style="color:#ef4444;">3 days left!</div>
+      </div>
+    </div>
+
+    <div class="deadline-item dl-crit">
+      <div class="dl-left">
+        <div class="dl-icon">🔴</div>
+        <div>
+          <div class="dl-name">Annual Return Filing</div>
+          <div class="dl-client">Farid Tech Solutions · SSM</div>
+        </div>
+      </div>
+      <div class="dl-right">
+        <div class="dl-date" style="color:#ef4444;">6 Mar 2026</div>
+        <div class="dl-days" style="color:#ef4444;">6 days left!</div>
+      </div>
+    </div>
+
+    <div class="deadline-item dl-soon">
+      <div class="dl-left">
+        <div class="dl-icon">🟠</div>
+        <div>
+          <div class="dl-name">Audit Report Draft</div>
+          <div class="dl-client">Rahman Holdings · Internal</div>
+        </div>
+      </div>
+      <div class="dl-right">
+        <div class="dl-date" style="color:#f97316;">18 Mar 2026</div>
+        <div class="dl-days" style="color:#f97316;">18 days</div>
+      </div>
+    </div>
+
+    <div class="deadline-item dl-soon">
+      <div class="dl-left">
+        <div class="dl-icon">🟠</div>
+        <div>
+          <div class="dl-name">Tax Return Submission</div>
+          <div class="dl-client">Mega Retail Group · LHDN</div>
+        </div>
+      </div>
+      <div class="dl-right">
+        <div class="dl-date" style="color:#f97316;">30 Apr 2026</div>
+        <div class="dl-days" style="color:#f97316;">59 days</div>
+      </div>
+    </div>
+
+    <div class="deadline-item dl-ok">
+      <div class="dl-left">
+        <div class="dl-icon">🟢</div>
+        <div>
+          <div class="dl-name">Q2 Internal Audit</div>
+          <div class="dl-client">Klinik Perdana · Internal</div>
+        </div>
+      </div>
+      <div class="dl-right">
+        <div class="dl-date" style="color:#22c55e;">30 Jun 2026</div>
+        <div class="dl-days">120 days</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. CLIENT + RISK -->
+  <div class="section-label">05 · Client Portfolio & Risk</div>
+  <div class="two-col">
+
+    <!-- Client Portfolio -->
+    <div class="card">
+      <div class="card-title">👥 Client Portfolio</div>
+      <div class="card-sub">Active Audit Clients</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div style="background:rgba(61,126,219,0.1);border:1px solid rgba(61,126,219,0.2);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:var(--blue2);">62</div>
+          <div style="font-size:8px;color:var(--muted);">TOTAL CLIENTS</div>
+        </div>
+        <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:800;color:#22c55e;">4</div>
+          <div style="font-size:8px;color:var(--muted);">NEW THIS MONTH</div>
+        </div>
+      </div>
+
+      <div class="client-item">
+        <div class="cl-left">
+          <div class="cl-dot" style="background:var(--gold2);"></div>
+          <div>
+            <div class="cl-name">Mega Retail Group</div>
+            <div class="cl-type">Retail · Large</div>
+          </div>
+        </div>
+        <div class="cl-right">
+          <div class="cl-val" style="color:var(--gold2);">RM24K</div>
+          <div class="cl-status s-repeat">↻ Repeat</div>
+        </div>
+      </div>
+
+      <div class="client-item">
+        <div class="cl-left">
+          <div class="cl-dot" style="background:#22c55e;"></div>
+          <div>
+            <div class="cl-name">Tech Ventures MY</div>
+            <div class="cl-type">Tech · Medium</div>
+          </div>
+        </div>
+        <div class="cl-right">
+          <div class="cl-val" style="color:#22c55e;">RM18K</div>
+          <div class="cl-status s-new">★ New</div>
+        </div>
+      </div>
+
+      <div class="client-item">
+        <div class="cl-left">
+          <div class="cl-dot" style="background:#ef4444;"></div>
+          <div>
+            <div class="cl-name">Syarikat Jaya Murni</div>
+            <div class="cl-type">Manufacturing · Medium</div>
+          </div>
+        </div>
+        <div class="cl-right">
+          <div class="cl-val" style="color:#ef4444;">RM18.4K</div>
+          <div class="cl-status s-risk">⚠ At Risk</div>
+        </div>
+      </div>
+
+      <!-- Industry tags -->
+      <div style="margin-top:10px;">
+        <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">By Industry</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">
+          <div style="background:rgba(61,126,219,0.12);border:1px solid rgba(61,126,219,0.2);border-radius:6px;padding:4px 8px;font-size:9px;color:var(--blue2);font-weight:600;">Retail 18</div>
+          <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);border-radius:6px;padding:4px 8px;font-size:9px;color:#22c55e;font-weight:600;">F&B 14</div>
+          <div style="background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.2);border-radius:6px;padding:4px 8px;font-size:9px;color:var(--gold2);font-weight:600;">Property 12</div>
+          <div style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);border-radius:6px;padding:4px 8px;font-size:9px;color:#a78bfa;font-weight:600;">Tech 10</div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:9px;color:var(--muted);font-weight:600;">Others 8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Assessment -->
+    <div class="card">
+      <div class="card-title">⚠️ Risk Assessment</div>
+      <div class="card-sub">Audit Risk · Client Level</div>
+
+      <div class="risk-item risk-high">
+        <div class="risk-left">
+          <div class="risk-icon">🔴</div>
+          <div>
+            <div class="risk-name">Syarikat Jaya Murni</div>
+            <div class="risk-issue">Qualified opinion risk</div>
+          </div>
+        </div>
+        <span class="risk-badge r-high">HIGH</span>
+      </div>
+
+      <div class="risk-item risk-high">
+        <div class="risk-left">
+          <div class="risk-icon">🔴</div>
+          <div>
+            <div class="risk-name">Farid Construction</div>
+            <div class="risk-issue">Going concern issue</div>
+          </div>
+        </div>
+        <span class="risk-badge r-high">HIGH</span>
+      </div>
+
+      <div class="risk-item risk-med">
+        <div class="risk-left">
+          <div class="risk-icon">🟠</div>
+          <div>
+            <div class="risk-name">Rahman Holdings</div>
+            <div class="risk-issue">Related party transactions</div>
+          </div>
+        </div>
+        <span class="risk-badge r-med">MEDIUM</span>
+      </div>
+
+      <div class="risk-item risk-med">
+        <div class="risk-left">
+          <div class="risk-icon">🟠</div>
+          <div>
+            <div class="risk-name">Mega Retail Group</div>
+            <div class="risk-issue">Inventory valuation</div>
+          </div>
+        </div>
+        <span class="risk-badge r-med">MEDIUM</span>
+      </div>
+
+      <div class="risk-item risk-low">
+        <div class="risk-left">
+          <div class="risk-icon">🟢</div>
+          <div>
+            <div class="risk-name">Tech Ventures MY</div>
+            <div class="risk-issue">Clean — no issues</div>
+          </div>
+        </div>
+        <span class="risk-badge r-low">LOW</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. STAFF -->
+  <div class="section-label">06 · Staff Utilization</div>
+  <div class="card">
+    <div class="card-title">👨‍💼 Auditor Performance</div>
+    <div class="card-sub">Chargeable Hours · Jobs · Feb 2026</div>
+
+    <div class="staff-item">
+      <div class="staff-top">
+        <div class="staff-left">
+          <div class="staff-avatar">👨‍💻</div>
+          <div>
+            <div class="staff-name">Encik Hafiz Razali</div>
+            <div class="staff-title">Audit Partner</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="staff-hrs">210 hrs</div>
+          <div style="font-size:8px;color:var(--muted);">105% utilization</div>
+        </div>
+      </div>
+      <div class="util-bar-bg"><div class="util-bar-fill" style="width:100%;background:linear-gradient(90deg,#3d7edb,#38bdf8);"></div></div>
+      <div style="height:8px;"></div>
+      <div class="staff-stats">
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:var(--blue2);">18</div>
+          <div class="staff-stat-lbl">Clients</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#22c55e;">12</div>
+          <div class="staff-stat-lbl">Completed</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#f97316;">2</div>
+          <div class="staff-stat-lbl">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="staff-item">
+      <div class="staff-top">
+        <div class="staff-left">
+          <div class="staff-avatar">👩‍💻</div>
+          <div>
+            <div class="staff-name">Puan Zarina Malik</div>
+            <div class="staff-title">Senior Auditor</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="staff-hrs">188 hrs</div>
+          <div style="font-size:8px;color:var(--muted);">94% utilization</div>
+        </div>
+      </div>
+      <div class="util-bar-bg"><div class="util-bar-fill" style="width:94%;background:linear-gradient(90deg,#22c55e,#86efac);"></div></div>
+      <div style="height:8px;"></div>
+      <div class="staff-stats">
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:var(--blue2);">16</div>
+          <div class="staff-stat-lbl">Clients</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#22c55e;">10</div>
+          <div class="staff-stat-lbl">Completed</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#f97316;">3</div>
+          <div class="staff-stat-lbl">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="staff-item">
+      <div class="staff-top">
+        <div class="staff-left">
+          <div class="staff-avatar">👨‍💻</div>
+          <div>
+            <div class="staff-name">En. Amirul Haziq</div>
+            <div class="staff-title">Audit Associate</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div class="staff-hrs">152 hrs</div>
+          <div style="font-size:8px;color:#f97316;">76% utilization</div>
+        </div>
+      </div>
+      <div class="util-bar-bg"><div class="util-bar-fill" style="width:76%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div></div>
+      <div style="height:8px;"></div>
+      <div class="staff-stats">
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:var(--blue2);">14</div>
+          <div class="staff-stat-lbl">Clients</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#22c55e;">8</div>
+          <div class="staff-stat-lbl">Completed</div>
+        </div>
+        <div class="staff-stat">
+          <div class="staff-stat-val" style="color:#ef4444;">5</div>
+          <div class="staff-stat-lbl">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outstanding -->
+    <div class="outstanding">
+      <div>
+        <div style="font-size:9px;color:#ef4444;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:3px;">⚠ Outstanding Billing</div>
+        <div style="font-size:10px;color:var(--muted);">8 clients belum bayar</div>
+      </div>
+      <div style="font-size:24px;font-weight:800;color:#ef4444;">RM 58,000</div>
+    </div>
+  </div>
+
+  <!-- 7. ALERTS -->
+  <div class="section-label">07 · Priority Alerts</div>
+  <div class="alert-card alert-crit">
+    <div class="alert-icon">🔴</div>
+    <div>
+      <div class="alert-title" style="color:#ef4444;">Critical Deadlines — 3 & 6 March!</div>
+      <div class="alert-desc">Syarikat Jaya Murni audit report (3 Mar) & Farid Tech annual return (6 Mar) are critically close. Escalate immediately to audit partner.</div>
+    </div>
+  </div>
+  <div class="alert-card alert-crit">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <div class="alert-title" style="color:#ef4444;">High Risk — Qualified Opinion</div>
+      <div class="alert-desc">Syarikat Jaya Murni & Farid Construction flagged as HIGH RISK. Qualified opinion may be required. Senior partner review needed.</div>
+    </div>
+  </div>
+  <div class="alert-card alert-warn">
+    <div class="alert-icon">💸</div>
+    <div>
+      <div class="alert-title" style="color:#f97316;">Outstanding Billing RM58,000</div>
+      <div class="alert-desc">8 clients with unpaid invoices. Send reminder letters and follow up with clients this week to improve cash flow.</div>
+    </div>
+  </div>
+  <div class="alert-card alert-ok">
+    <div class="alert-icon">✅</div>
+    <div>
+      <div class="alert-title" style="color:#22c55e;">Revenue Target Exceeded — 112%!</div>
+      <div class="alert-desc">Fees collected surpassed monthly target by 12%. Jobs completed at 104%. Excellent team performance this month!</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="section-label">08 · Summary</div>
+  <div class="sum-grid">
+    <div class="sum-item">
+      <div class="sum-icon">💰</div>
+      <div>
+        <div class="sum-val" style="color:var(--blue2);">RM224K</div>
+        <div class="sum-lbl">Fees Collected</div>
+      </div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-icon">📋</div>
+      <div>
+        <div class="sum-val" style="color:var(--gold2);">48</div>
+        <div class="sum-lbl">Engagements</div>
+      </div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-icon">⏰</div>
+      <div>
+        <div class="sum-val" style="color:#ef4444;">5</div>
+        <div class="sum-lbl">Overdue Jobs</div>
+      </div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-icon">📄</div>
+      <div>
+        <div class="sum-val" style="color:#f97316;">RM58K</div>
+        <div class="sum-lbl">Outstanding</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-space"></div>
+  <div class="footer">// Pinnacle Audit & Co. · Dashboard · Confidential · Feb 2026</div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-item active">
+    <div class="tab-icon">💰</div>
+    <div>Revenue</div>
+  </div>
+  <div class="tab-item">
+    <div class="tab-icon">📋</div>
+    <div>Jobs</div>
+  </div>
+  <div class="tab-item">
+    <div class="tab-icon">👥</div>
+    <div>Clients</div>
+  </div>
+  <div class="tab-item">
+    <div class="tab-icon">👨‍💼</div>
+    <div>Staff</div>
+  </div>
+</div>
+
+</body>
+</html>
